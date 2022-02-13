@@ -21,6 +21,8 @@ services:
       build:
         context: ./
       container_name: grafana_css
+  # id -u  user number to access local files, if required
+  # user: 'id'
       ports:
         - 3000:3000
       depends_on:
@@ -29,8 +31,10 @@ services:
         - influxdb        
       volumes:
         - grafana-data:/var/lib/grafana
+
 # Explicitly define the persistent volume for your data storage
+# dinamicaly created by dockers, this can be changed to local/static directories
+
 volumes:
   grafana-data:
   influxdb-data:
-#    external: true
