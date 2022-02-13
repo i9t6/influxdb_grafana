@@ -1,0 +1,1214 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "target": {
+            "limit": 100,
+            "matchAny": false,
+            "tags": [],
+            "type": "dashboard"
+          },
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 4,
+    "links": [],
+    "panels": [
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 15,
+        "panels": [],
+        "title": "Services Summary",
+        "type": "row"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "text",
+              "mode": "fixed"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 0,
+          "y": 1
+        },
+        "id": 17,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"services\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p1\" or r[\"_field\"] == \"p2\" or r[\"_field\"] == \"p3\" or r[\"_field\"] == \"p4\" or r[\"_field\"] == \"p5\")\r\n  |> group(columns: [\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\r\n  |> yield(name: \"last\")",
+            "refId": "A"
+          }
+        ],
+        "title": "Total Services",
+        "type": "stat"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 8,
+          "x": 4,
+          "y": 1
+        },
+        "id": 18,
+        "options": {
+          "displayMode": "basic",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": false,
+          "text": {}
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"services\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p1\" or r[\"_field\"] == \"p2\" or r[\"_field\"] == \"p3\" or r[\"_field\"] == \"p4\" or r[\"_field\"] == \"p5\")\r\n  |> group(columns: [\"service\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)",
+            "refId": "A"
+          }
+        ],
+        "title": "Services Distribution",
+        "type": "bargauge"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 7,
+          "x": 12,
+          "y": 1
+        },
+        "id": 21,
+        "options": {
+          "displayMode": "basic",
+          "orientation": "horizontal",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": true,
+          "text": {}
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"services\")\r\n  |> filter(fn: (r) =>  r[\"_field\"] == \"p1\" or r[\"_field\"] == \"p2\" or r[\"_field\"] == \"p3\" or r[\"_field\"] == \"p4\" or r[\"_field\"] == \"p5\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\r\n  |> yield(name: \"last\")",
+            "refId": "A"
+          }
+        ],
+        "title": "Priority Distribution",
+        "type": "bargauge"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "text",
+              "mode": "fixed"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 0,
+          "y": 9
+        },
+        "id": 20,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "  from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"services\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p1\" )\r\n  |> group(columns: [\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\r\n  |> yield(name: \"last\")\r\n  ",
+            "refId": "A"
+          }
+        ],
+        "title": "P1 Services Total",
+        "type": "stat"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 5,
+          "x": 4,
+          "y": 9
+        },
+        "id": 22,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "right"
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"services\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p1\")\r\n  |> group(columns: [\"service\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\r\n  |> yield(name: \"last\")",
+            "refId": "A"
+          }
+        ],
+        "title": "P1 Services Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 5,
+          "x": 9,
+          "y": 9
+        },
+        "id": 25,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "right"
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"services\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p2\")\r\n  |> group(columns: [\"service\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\r\n  |> yield(name: \"last\")",
+            "refId": "A"
+          }
+        ],
+        "title": "P2 Services Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 5,
+          "x": 14,
+          "y": 9
+        },
+        "id": 26,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "list",
+            "placement": "right"
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"services\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p5\")\r\n  |> group(columns: [\"service\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\r\n  |> yield(name: \"last\")",
+            "refId": "A"
+          }
+        ],
+        "title": "P5 Services Distribution",
+        "type": "piechart"
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 17
+        },
+        "id": 5,
+        "panels": [],
+        "title": "Devices by priority",
+        "type": "row"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 0,
+          "y": 18
+        },
+        "id": 13,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"priorities\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p1\")\r\n  |> group(columns: [\"ned\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "P1 Devices Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 4,
+          "y": 18
+        },
+        "id": 6,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"priorities\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p2\")\r\n  |> group(columns: [\"ned\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "P2 Devices Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 8,
+          "y": 18
+        },
+        "id": 23,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"priorities\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p3\")\r\n  |> group(columns: [\"ned\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "P3 Devices Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 12,
+          "y": 18
+        },
+        "id": 27,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"priorities\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p4\")\r\n  |> group(columns: [\"ned\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "P4 Devices Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 16,
+          "y": 18
+        },
+        "id": 28,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "pie",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"priorities\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"p5\")\r\n  |> group(columns: [\"ned\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "P5 Devices Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 0,
+          "y": 26
+        },
+        "id": 3,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"priorities\")\r\n  |> filter(fn: (r) => r[\"ned\"] == \"cisco-iosxr-cli-7.33\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "IOS-XR Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 6,
+          "y": 26
+        },
+        "id": 24,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"priorities\")\r\n  |> filter(fn: (r) => r[\"ned\"] == \"cisco-ios-cli-6.69\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "IOS Distribution",
+        "type": "piechart"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              }
+            },
+            "mappings": []
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 6,
+          "x": 12,
+          "y": 26
+        },
+        "id": 29,
+        "options": {
+          "displayLabels": [
+            "value"
+          ],
+          "legend": {
+            "displayMode": "table",
+            "placement": "bottom",
+            "values": []
+          },
+          "pieType": "donut",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "tooltip": {
+            "mode": "single"
+          }
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"priorities\")\r\n  |> filter(fn: (r) => r[\"ned\"] != \"cisco-ios-cli-6.69\" and r[\"ned\"] != \"cisco-iosxr-cli-7.33\")\r\n  |> group(columns: [\"_field\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"mean\")",
+            "refId": "A"
+          }
+        ],
+        "title": "Other Distribution",
+        "type": "piechart"
+      },
+      {
+        "collapsed": false,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 34
+        },
+        "id": 31,
+        "panels": [],
+        "title": "Changes Summary",
+        "type": "row"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "fixedColor": "text",
+              "mode": "fixed"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 4,
+          "x": 0,
+          "y": 35
+        },
+        "id": 33,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "text": {},
+          "textMode": "auto"
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"changes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"qty\")\r\n  |> group(columns: [\"_measurement\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)",
+            "refId": "A"
+          }
+        ],
+        "title": "Total Changes",
+        "type": "stat"
+      },
+      {
+        "datasource": "InfluxDB",
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 7,
+          "w": 15,
+          "x": 4,
+          "y": 35
+        },
+        "id": 35,
+        "options": {
+          "displayMode": "basic",
+          "orientation": "vertical",
+          "reduceOptions": {
+            "calcs": [],
+            "fields": "",
+            "values": false
+          },
+          "showUnfilled": false,
+          "text": {}
+        },
+        "pluginVersion": "8.1.3",
+        "targets": [
+          {
+            "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"changes\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"qty\")\r\n  |> group(columns: [\"change\"])\r\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)",
+            "refId": "A"
+          }
+        ],
+        "title": "Changes Distribution",
+        "type": "bargauge"
+      },
+      {
+        "collapsed": true,
+        "datasource": null,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 43
+        },
+        "id": 8,
+        "panels": [
+          {
+            "datasource": "InfluxDB",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 5,
+              "x": 0,
+              "y": 3
+            },
+            "id": 10,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "/^count \"NSO\\-network-element\"$/",
+                "values": false
+              },
+              "text": {},
+              "textMode": "auto"
+            },
+            "pluginVersion": "8.1.3",
+            "targets": [
+              {
+                "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"licenses\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+                "refId": "A"
+              }
+            ],
+            "title": "Network Elements",
+            "type": "stat"
+          },
+          {
+            "datasource": "InfluxDB",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 5,
+              "x": 5,
+              "y": 3
+            },
+            "id": 11,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "/^status \"NSO\\-network-element\"$/",
+                "values": false
+              },
+              "text": {},
+              "textMode": "auto"
+            },
+            "pluginVersion": "8.1.3",
+            "targets": [
+              {
+                "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"licenses\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"status\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: last, createEmpty: false)\r\n  |> yield(name: \"last\")",
+                "refId": "A"
+              }
+            ],
+            "title": "Licensing Status",
+            "type": "stat"
+          },
+          {
+            "datasource": "InfluxDB",
+            "fieldConfig": {
+              "defaults": {
+                "color": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                },
+                "mappings": [],
+                "thresholds": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 80
+                    }
+                  ]
+                }
+              },
+              "overrides": []
+            },
+            "gridPos": {
+              "h": 8,
+              "w": 7,
+              "x": 10,
+              "y": 3
+            },
+            "id": 12,
+            "options": {
+              "colorMode": "value",
+              "graphMode": "area",
+              "justifyMode": "auto",
+              "orientation": "auto",
+              "reduceOptions": {
+                "calcs": [
+                  "lastNotNull"
+                ],
+                "fields": "/^Time$/",
+                "values": false
+              },
+              "text": {},
+              "textMode": "auto"
+            },
+            "pluginVersion": "8.1.3",
+            "targets": [
+              {
+                "query": "from(bucket: \"css\")\r\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\r\n  |> filter(fn: (r) => r[\"_measurement\"] == \"licenses\")\r\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\r\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\r\n  |> yield(name: \"last\")",
+                "refId": "A"
+              }
+            ],
+            "title": "Data Recorded at:",
+            "type": "stat"
+          }
+        ],
+        "title": "Licenses Summary",
+        "type": "row"
+      }
+    ],
+    "refresh": false,
+    "schemaVersion": 30,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Adoption Dashboard",
+    "uid": "py2m47F7z",
+    "version": 16
+  }

@@ -1,0 +1,14 @@
+apiVersion: 1
+
+datasources:
+  - name: InfluxDB
+    type: influxdb
+    access: server
+    url: http://influxdb_css:8086
+    secureJsonData:
+      token: P4By5dsQDzgqtZAGrGSUZrrJo22ALYM3-SkdlWYPji8aJK2DtW9o0vXP1N5cEq69TPL8mKPxr4mxxYfJdSFKNA==
+    jsonData:
+      version: Flux
+      organization: cisco
+      defaultBucket: css
+      tlsSkipVerify: true
