@@ -452,7 +452,7 @@ def changes_info():
     my_logger.error(f"{write_to_influx('changes', changes_summary)}")
 
 def main():
-    #time.sleep(180)
+    time.sleep(30)
     try:
         verbose = sys.argv[1]
     except:
