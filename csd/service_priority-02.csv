@@ -1,0 +1,40 @@
+﻿Service,Priority,Condition-1,Condition-2,Condition-3,Notes
+# service,,,,,"OR a newline, AND a new collumn"
+# service,,,,,"left a defaul, any any for all"
+# service,,,,, keys of service
+# service name = "sname"
+# device name = name
+# devices,,,,,"ned, name, authgroup, service-list, (ip)address,location"
+# <-- Comments
+#
+#service name = "sname"
+#BGPlab,1,'test' in sname,,,
+BGPlab,2,,,
+#
+#l3vpn_client,1,'10002' in site,,,
+l3vpn_client,2,,,,
+#
+#port-turnup,1,(('iosxr' in ned) or ('ios' in ned)),,,
+port-turnup,1,not (('iosxr' in ned) or ('ios' in ned)),,,
+#
+#radius_service,3,'AMER' in Region,,,
+radius_service,1,'APJC' in Region,,,
+#
+#snmpPyTemp5,1,'mx' in location,,,
+snmpPyTemp5,2,,,,
+#
+#snmpTemp5,3,'iosxr' in ned,'test1' in comm-str,,
+snmpTemp5,4,not (('iosxr' in ned) or ('ios' in ned)),,,
+#
+#Srv_Policy_Map,3,(('iosxr' in ned) or ('ios' in ned)),,,
+Srv_Policy_Map,4,not (('iosxr' in ned) or ('ios' in ned)),,,
+#
+#vrf,2,,,,
+#
+device,3,(('iosxr' in ned) or ('ios' in ned)),'1' in name,,
+device,2,not (('iosxr' in ned) or ('ios' in ned)),,,
+device,1,'iosxr' in ned,,,
+device,2,'ios' in ned,,,
+device,3,,,,
+#
+#['name', 'address', 'port', 'ssh', 'location', 'authgroup', 'device-type', 'commit-queue', 'active-settings', 'state', 'capability', 'module', 'ned', 'config', 'live-status', 'service-list', 'alarm-summary']

@@ -32,6 +32,13 @@ services:
       volumes:
         - grafana-data:/var/lib/grafana
 
+    csd:
+      build:
+        context: ./csd
+      container_name: csd        
+      depends_on:
+        - influxdb
+        - grafana
 # Explicitly define the persistent volume for your data storage
 # dinamicaly created by dockers
 # docker volume ls 
