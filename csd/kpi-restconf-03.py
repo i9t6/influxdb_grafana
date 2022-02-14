@@ -16,7 +16,7 @@ urllib3.disable_warnings()
 #Colums of CSV file with conditions
 conditions_index = [2,3,4]
 
-# NSO info, update ip, username password, Authotization Basic and port (7443) 
+# NSO info, update ip, username password, Authotization Basic and http/https 
 nso_srv = {'host':'172.16.1.122','port':'2022','username':'admin','password':'admin','hostkey_verify':False, 'http_or_s':'https', 'http_prt':'7443'}
 my_nso = f"{nso_srv['http_or_s']}://{nso_srv['host']}:{nso_srv['http_prt']}/restconf"
 base_url = my_nso + "/data"
