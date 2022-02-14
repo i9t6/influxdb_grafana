@@ -18,18 +18,15 @@ conditions_index = [2,3,4]
 
 # NSO info
 nso_srv = {'host':'172.16.1.122','port':'2022','username':'admin','password':'admin','hostkey_verify':False}
-#nso_srv = {'host':'10.57.236.6','port':'2022','username':'hoyosrc','password':'Sickness123!','hostkey_verify':False}
 base_url = f"https://{nso_srv['host']}:7443/restconf/data"
 base_url_ops = f"https://{nso_srv['host']}:7443/restconf/operations"
 headers = {'Accept': 'application/yang-data+json','Content-Type': 'application/yang-data+json','Authorization': 'Basic YWRtaW46YWRtaW4='}
-#headers = {'Accept': 'application/yang-data+json','Content-Type': 'application/yang-data+json','Authorization': 'Basic aG95b3NyYzpTaWNrbmVzczEyMyE='}
-
 
 # For licensing information
 nso_srv_lics = {'host':nso_srv['host'], 'port_cli':'2024','username':nso_srv['username'] , 'password':nso_srv['password']}
 
-# You can generate a Token from the "Tokens Tab" in the UI
-influx_srv = {'url':'http://172.16.1.122:8086','token':'P4By5dsQDzgqtZAGrGSUZrrJo22ALYM3-SkdlWYPji8aJK2DtW9o0vXP1N5cEq69TPL8mKPxr4mxxYfJdSFKNA=='}
+# You can generate a Token from the "Tokens Tab" in the UI, this is fix in this code, and docker compose for influxdb and grafana
+influx_srv = {'url':'http://influxdb_css:8086','token':'P4By5dsQDzgqtZAGrGSUZrrJo22ALYM3-SkdlWYPji8aJK2DtW9o0vXP1N5cEq69TPL8mKPxr4mxxYfJdSFKNA=='}
 # Influx bucket & org
 influx_db_info  = ('css','cisco')
 
