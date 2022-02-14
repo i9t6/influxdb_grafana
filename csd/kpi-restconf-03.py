@@ -18,8 +18,9 @@ conditions_index = [2,3,4]
 
 # NSO info, update ip, username password, Authotization Basic and port (7443) 
 nso_srv = {'host':'172.16.1.122','port':'2022','username':'admin','password':'admin','hostkey_verify':False, 'http_or_s':'https', 'http_prt':'7443'}
-base_url = f"{nso_srv['http_or_s']}://{nso_srv['host']}:{nso_srv['http_prt']}/restconf/data"
-base_url_ops = f"{nso_srv['http_or_s']}://{nso_srv['host']}:{nso_srv['http_prt']}/restconf/operations"
+my_nso = f"{nso_srv['http_or_s']}://{nso_srv['host']}:{nso_srv['http_prt']}/restconf"
+base_url = my_nso + "/data"
+base_url_ops = my_nso+ "/operations"
 headers = {'Accept': 'application/yang-data+json','Content-Type': 'application/yang-data+json','Authorization': 'Basic YWRtaW46YWRtaW4='}
 
 # For licensing information
