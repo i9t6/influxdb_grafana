@@ -19,7 +19,7 @@ services:
         - influxdb-data:/etc/influxdb2 
     grafana:
       build:
-        context: ./
+        context: ./grafana
       container_name: grafana_css
   # id -u  user number to access local files, if required
   # user: 'id'
